@@ -16,6 +16,7 @@ import {
   ExternalLink,
   Clock,
   MoreHorizontal,
+  Loader2,
 } from "lucide-react";
 import { useApplications } from "@/lib/application-context";
 import { JobApplication, ApplicationStatus } from "@/types/application";
@@ -84,6 +85,7 @@ export const KanbanBoard: React.FC = () => {
     setIsCreateModalOpen,
     setCreateModalDefaultStatus,
     sidebarCollapsed,
+    isLoadingData,
   } = useApplications();
 
   const [draggedAppId, setDraggedAppId] = useState<string | null>(null);
@@ -213,143 +215,152 @@ export const KanbanBoard: React.FC = () => {
       ref={scrollContainerRef}
       className="flex-1 w-full bg-dots p-4 sm:p-6 overflow-x-auto min-h-[calc(100vh-120px)]"
     >
-      <div className="flex items-start gap-4 sm:gap-5 pb-8 min-w-max">
-        {COLUMNS.map((col) => {
-          const columnApps = filteredApplications.filter((a) => a.status === col.status);
-          const isDropActive = activeDropColumn === col.status;
+      {isLoadingData ? (
+        <div className="flex items-center justify-center h-full min-h-[400px]">
+          <div className="flex flex-col items-center gap-4">
+            <Loader2 className="w-12 h-12 text-purple-500 animate-spin" />
+            <p className="text-sm text-slate-500 dark:text-slate-400">Loading your applications...</p>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-start gap-4 sm:gap-5 pb-8 min-w-max">
+          {COLUMNS.map((col) => {
+            const columnApps = filteredApplications.filter((a) => a.status === col.status);
+            const isDropActive = activeDropColumn === col.status;
 
-          return (
-            <div
-              key={col.status}
-              onDragOver={(e) => handleDragOver(e, col.status)}
-              onDragLeave={handleDragLeave}
-              onDrop={(e) => handleDrop(e, col.status)}
-              className={`w-[290px] sm:w-[320px] shrink-0 flex flex-col max-h-[calc(100vh-140px)] rounded-2xl transition-all duration-200 ${
-                isDropActive
-                  ? "ring-2 ring-purple-500/80 bg-purple-50/30 dark:bg-purple-950/20"
-                  : ""
-              }`}
-            >
-              {/* Column Header (Exact match to reference image) */}
+            return (
               <div
-                className={`px-3.5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wide flex items-center justify-between shadow-2xs select-none shrink-0 ${col.headerBg} ${col.headerText}`}
+                key={col.status}
+                onDragOver={(e) => handleDragOver(e, col.status)}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, col.status)}
+                className={`w-[290px] sm:w-[320px] shrink-0 flex flex-col max-h-[calc(100vh-140px)] rounded-2xl transition-all duration-200 ${
+                  isDropActive
+                    ? "ring-2 ring-purple-500/80 bg-purple-50/30 dark:bg-purple-950/20"
+                    : ""
+                }`}
               >
-                <div className="flex items-center gap-2">
-                  <span className="shrink-0">{col.icon}</span>
-                  <span>
-                    {col.title} ({columnApps.length} {columnApps.length === 1 ? "JOB" : "JOBS"})
-                  </span>
-                </div>
+                {/* Column Header (Exact match to reference image) */}
+                <div
+                  className={`px-3.5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wide flex items-center justify-between shadow-2xs select-none shrink-0 ${col.headerBg} ${col.headerText}`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="shrink-0">{col.icon}</span>
+                    <span>
+                      {col.title} ({columnApps.length} {columnApps.length === 1 ? "JOB" : "JOBS"})
+                    </span>
+                  </div>
 
-                <div className="flex items-center gap-1 opacity-80 hover:opacity-100">
-                  <button
-                    onClick={() => handleQuickAdd(col.status)}
-                    className="p-1 rounded-md hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
-                    title={`Add job to ${col.title}`}
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    className="p-1 rounded-md hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
-                    title="Column options"
-                  >
-                    <Settings className="w-3.5 h-3.5" />
-                  </button>
-                  <span className="p-0.5 opacity-60 cursor-grab">
-                    <GripVertical className="w-3.5 h-3.5" />
-                  </span>
-                </div>
-              </div>
-
-              {/* Cards List Area */}
-              <div className="flex-1 overflow-y-auto space-y-3 py-3 pr-1">
-                {columnApps.length === 0 ? (
-                  <div className="py-12 px-4 text-center rounded-xl border border-dashed border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-900/40 text-xs text-slate-400 space-y-2">
-                    <p>No applications yet</p>
+                  <div className="flex items-center gap-1 opacity-80 hover:opacity-100">
                     <button
                       onClick={() => handleQuickAdd(col.status)}
-                      className="text-purple-600 dark:text-purple-400 font-semibold hover:underline"
+                      className="p-1 rounded-md hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                      title={`Add job to ${col.title}`}
                     >
-                      + Add a job
+                      <Plus className="w-3.5 h-3.5" />
                     </button>
+                    <button
+                      className="p-1 rounded-md hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                      title="Column options"
+                    >
+                      <Settings className="w-3.5 h-3.5" />
+                    </button>
+                    <span className="p-0.5 opacity-60 cursor-grab">
+                      <GripVertical className="w-3.5 h-3.5" />
+                    </span>
                   </div>
-                ) : (
-                  columnApps.map((app) => {
-                    const isDragging = draggedAppId === app.id;
+                </div>
 
-                    return (
-                      <div
-                        key={app.id}
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, app.id)}
-                        onDragEnd={handleDragEnd}
-                        onClick={() => setSelectedApplication(app)}
-                        className={`group p-4 rounded-xl border bg-white dark:bg-slate-800/95 transition-all duration-150 cursor-grab active:cursor-grabbing select-none ${
-                          isDragging
-                            ? "opacity-50 rotate-2 scale-95 shadow-xl border-purple-500"
-                            : "border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600"
-                        }`}
+                {/* Cards List Area */}
+                <div className="flex-1 overflow-y-auto space-y-3 py-3 pr-1">
+                  {columnApps.length === 0 ? (
+                    <div className="py-12 px-4 text-center rounded-xl border border-dashed border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-900/40 text-xs text-slate-400 space-y-2">
+                      <p>No applications yet</p>
+                      <button
+                        onClick={() => handleQuickAdd(col.status)}
+                        className="text-purple-600 dark:text-purple-400 font-semibold hover:underline"
                       >
-                        {/* Company Name */}
-                        <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">
-                          {app.company}
-                        </div>
+                        + Add a job
+                      </button>
+                    </div>
+                  ) : (
+                    columnApps.map((app) => {
+                      const isDragging = draggedAppId === app.id;
 
-                        {/* Position Title */}
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1 leading-snug group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-                          {app.position}
-                        </h4>
+                      return (
+                        <div
+                          key={app.id}
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, app.id)}
+                          onDragEnd={handleDragEnd}
+                          onClick={() => setSelectedApplication(app)}
+                          className={`group p-4 rounded-xl border bg-white dark:bg-slate-800/95 transition-all duration-150 cursor-grab active:cursor-grabbing select-none ${
+                            isDragging
+                              ? "opacity-50 rotate-2 scale-95 shadow-xl border-purple-500"
+                              : "border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600"
+                          }`}
+                        >
+                          {/* Company Name */}
+                          <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">
+                            {app.company}
+                          </div>
 
-                        {/* Location & Date Row */}
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400 dark:text-slate-400 mt-2.5">
-                          {app.location && (
+                          {/* Position Title */}
+                          <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1 leading-snug group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                            {app.position}
+                          </h4>
+
+                          {/* Location & Date Row */}
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400 dark:text-slate-400 mt-2.5">
+                            {app.location && (
+                              <div className="flex items-center gap-1">
+                                <MapPin className="w-3.5 h-3.5 shrink-0 text-slate-400" />
+                                <span className="truncate max-w-[140px]">{app.location}</span>
+                              </div>
+                            )}
+
                             <div className="flex items-center gap-1">
-                              <MapPin className="w-3.5 h-3.5 shrink-0 text-slate-400" />
-                              <span className="truncate max-w-[140px]">{app.location}</span>
+                              <Calendar className="w-3.5 h-3.5 shrink-0 text-slate-400" />
+                              <span>{formatDate(app.appliedDate)}</span>
+                            </div>
+                          </div>
+
+                          {/* Optional Reference Tag Pill (matches 'INTERVIEWER WAS NICE') */}
+                          {app.notes && (
+                            <div className="mt-2.5">
+                              {app.notes.toUpperCase().includes("INTERVIEW") ? (
+                                <span className="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider uppercase bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                                  {app.notes.length > 25 ? app.notes.slice(0, 25) + "..." : app.notes}
+                                </span>
+                              ) : app.followUpDate ? (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider uppercase bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                                  <Clock className="w-2.5 h-2.5" />
+                                  {formatRelativeDays(app.followUpDate)}
+                                </span>
+                              ) : null}
                             </div>
                           )}
-
-                          <div className="flex items-center gap-1">
-                            <Calendar className="w-3.5 h-3.5 shrink-0 text-slate-400" />
-                            <span>{formatDate(app.appliedDate)}</span>
-                          </div>
                         </div>
+                      );
+                    })
+                  )}
+                </div>
 
-                        {/* Optional Reference Tag Pill (matches 'INTERVIEWER WAS NICE') */}
-                        {app.notes && (
-                          <div className="mt-2.5">
-                            {app.notes.toUpperCase().includes("INTERVIEW") ? (
-                              <span className="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider uppercase bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                                {app.notes.length > 25 ? app.notes.slice(0, 25) + "..." : app.notes}
-                              </span>
-                            ) : app.followUpDate ? (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider uppercase bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
-                                <Clock className="w-2.5 h-2.5" />
-                                {formatRelativeDays(app.followUpDate)}
-                              </span>
-                            ) : null}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })
-                )}
+                {/* Bottom '+ Add job' button (Exact match to reference image) */}
+                <div className="pt-2 shrink-0">
+                  <button
+                    onClick={() => handleQuickAdd(col.status)}
+                    className="w-full py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/90 hover:bg-white text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 hover:border-purple-300 dark:hover:border-purple-600 transition-all shadow-2xs flex items-center justify-center gap-1.5 active:scale-[0.99]"
+                  >
+                    <Plus className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Add job</span>
+                  </button>
+                </div>
               </div>
-
-              {/* Bottom '+ Add job' button (Exact match to reference image) */}
-              <div className="pt-2 shrink-0">
-                <button
-                  onClick={() => handleQuickAdd(col.status)}
-                  className="w-full py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/90 hover:bg-white text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 hover:border-purple-300 dark:hover:border-purple-600 transition-all shadow-2xs flex items-center justify-center gap-1.5 active:scale-[0.99]"
-                >
-                  <Plus className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Add job</span>
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
