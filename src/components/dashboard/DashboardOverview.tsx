@@ -354,7 +354,7 @@ export const DashboardOverview: React.FC = () => {
               </h2>
             </div>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 font-medium">
-              {allInterviews.length} upcoming
+              {allInterviews.length}
             </span>
           </div>
 
@@ -362,7 +362,7 @@ export const DashboardOverview: React.FC = () => {
             <div className="py-8 text-center border border-dashed border-slate-200 dark:border-slate-800 rounded-xl space-y-2">
               <Clock className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto" />
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                No upcoming interviews scheduled
+                No upcoming interviews
               </p>
               <p className="text-xs text-slate-400">
                 Add an interview stage to any application to track rounds here.
@@ -419,15 +419,15 @@ export const DashboardOverview: React.FC = () => {
               </h2>
             </div>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 font-medium">
-              {followUpApps.length} pending
+              {followUpApps.length}
             </span>
           </div>
 
           {followUpApps.length === 0 ? (
             <div className="py-8 text-center border border-dashed border-slate-200 dark:border-slate-800 rounded-xl space-y-2">
-              <CheckCircle2 className="w-8 h-8 text-emerald-500/50 mx-auto" />
+              <CheckCircle2 className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto" />
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                All follow-ups clear!
+                No pending follow-ups
               </p>
               <p className="text-xs text-slate-400">
                 Set a follow-up date on applications to get reminder notifications here.
