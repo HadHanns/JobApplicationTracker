@@ -42,6 +42,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ fixed = true }) => {
     setIsExportModalOpen,
   } = useApplications();
 
+  // Force expanded state in mobile mode (when not fixed)
+  const isCollapsed = fixed ? sidebarCollapsed : false;
+
   const [assetsOpen, setAssetsOpen] = useState(true);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
@@ -78,12 +81,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ fixed = true }) => {
       className={`${
         fixed ? "fixed top-0 left-0 bottom-0 z-40" : "w-full h-full"
       } bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between transition-all duration-300 ease-in-out ${
-        sidebarCollapsed ? "w-16" : "w-60"
+        isCollapsed ? "w-16" : "w-60"
       }`}
     >
       {/* Top Header */}
       <div className="shrink-0">
-        {sidebarCollapsed ? (
+        {isCollapsed ? (
           <div className="h-16 px-2 flex items-center justify-center border-b border-slate-100 dark:border-slate-800/80">
             <button
               onClick={() => setSidebarCollapsed(false)}
@@ -123,18 +126,20 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ fixed = true }) => {
               </span>
             </div>
 
-            <button
-              onClick={() => setSidebarCollapsed(true)}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-              title="Collapse sidebar"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
+            {fixed && (
+              <button
+                onClick={() => setSidebarCollapsed(true)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                title="Collapse sidebar"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+            )}
           </div>
         )}
 
         {/* Primary Navigation */}
-        <div className={`space-y-1.5 ${sidebarCollapsed ? "p-2" : "p-3"}`}>
+        <div className={`space-y-1.5 ${isCollapsed ? "p-2" : "p-3"}`}>
           {mainNav.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -143,7 +148,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ fixed = true }) => {
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
                 className={`relative transition-all duration-150 cursor-pointer ${
-                  sidebarCollapsed
+                  isCollapsed
                     ? `w-10 h-10 mx-auto flex items-center justify-center rounded-xl ${
                         isActive
                           ? "bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 ring-1 ring-purple-300 dark:ring-purple-800 shadow-xs"
@@ -155,11 +160,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ fixed = true }) => {
                           : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800/60"
                       }`
                 }`}
-                title={sidebarCollapsed ? `${item.label}${item.count !== undefined ? ` (${item.count})` : ""}` : undefined}
+                title={isCollapsed ? `${item.label}${item.count !== undefined ? ` (${item.count})` : ""}` : undefined}
               >
                 <Icon
                   className={`shrink-0 transition-colors ${
-                    sidebarCollapsed ? "w-5 h-5" : "w-4.5 h-4.5"
+                    isCollapsed ? "w-5 h-5" : "w-4.5 h-4.5"
                   } ${
                     isActive
                       ? "text-purple-700 dark:text-purple-300"
@@ -168,11 +173,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ fixed = true }) => {
                 />
 
                 {/* Badge indicator in collapsed mode */}
-                {sidebarCollapsed && item.count !== undefined && item.count > 0 && (
+                {isCollapsed && item.count !== undefined && item.count > 0 && (
                   <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-purple-600 ring-2 ring-white dark:ring-slate-900" />
                 )}
 
-                {!sidebarCollapsed && (
+                {!isCollapsed && (
                   <div className="flex-1 flex items-center justify-between text-left">
                     <span>{item.label}</span>
                     {item.count !== undefined && (
@@ -194,7 +199,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ fixed = true }) => {
         </div>
 
         {/* Secondary Navigation Section (Expanded only) */}
-        {!sidebarCollapsed && (
+        {!isCollapsed && (
           <div className="px-3 pt-2 space-y-1 border-t border-slate-100 dark:border-slate-800/60">
             <button
               onClick={() => setAssetsOpen(!assetsOpen)}
@@ -243,9 +248,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ fixed = true }) => {
       </div>
 
       {/* Bottom User & Settings Section */}
-      <div className={`border-t border-slate-100 dark:border-slate-800/80 ${sidebarCollapsed ? "p-2 space-y-2.5" : "p-3 space-y-3"}`}>
+      <div className={`border-t border-slate-100 dark:border-slate-800/80 ${isCollapsed ? "p-2 space-y-2.5" : "p-3 space-y-3"}`}>
         {/* User Profile */}
-        {!sidebarCollapsed ? (
+        {!isCollapsed ? (
           <div className="relative">
             <div className="flex items-center justify-between p-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60">
               <div className="flex items-center gap-2.5 min-w-0">
@@ -342,7 +347,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ fixed = true }) => {
         )}
 
         {/* Theme Toggle Button */}
-        {sidebarCollapsed ? (
+        {isCollapsed ? (
           <button
             onClick={toggleTheme}
             className="w-10 h-10 mx-auto rounded-xl flex items-center justify-center bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors cursor-pointer shadow-2xs"
@@ -382,7 +387,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ fixed = true }) => {
         )}
 
         {/* Personal Workspace Info Card (Expanded only) */}
-        {!sidebarCollapsed && (
+        {!isCollapsed && (
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-1.5 text-xs">
             <div className="flex items-center justify-between text-slate-700 dark:text-slate-300 font-semibold text-[11px]">
               <span>Personal Workspace</span>

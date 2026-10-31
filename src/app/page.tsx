@@ -65,15 +65,7 @@ export default function HomePage() {
             className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="relative z-10 w-64 bg-white dark:bg-slate-900 h-full shadow-2xl flex flex-col">
-            <div className="p-3 flex justify-end">
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+          <div className="relative z-10 w-72 bg-white dark:bg-slate-900 h-full shadow-2xl flex flex-col">
             <div className="flex-1 overflow-y-auto">
               <AppSidebar fixed={false} />
             </div>
