@@ -327,17 +327,25 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
-        if (res.ok) {
-          const json = (await res.json()) as any;
-          if (json.data?.id) {
-            // Replace tempId with actual DB ID
-            setApplications((prev) =>
-              prev.map((app) => (app.id === tempId ? json.data : app))
-            );
-          }
+        if (!res.ok) {
+          const errorData = (await res.json().catch(() => ({ error: "Unknown error" }))) as { error: string };
+          console.error("Failed to create application:", errorData);
+          // Revert optimistic update on error
+          setApplications((prev) => prev.filter((app) => app.id !== tempId));
+          throw new Error(errorData.error || "Failed to save application");
+        }
+        const json = (await res.json()) as any;
+        if (json.data?.id) {
+          // Replace tempId with actual DB ID
+          setApplications((prev) =>
+            prev.map((app) => (app.id === tempId ? json.data : app))
+          );
         }
       } catch (err) {
         console.error("Failed to sync new application to server:", err);
+        // Revert optimistic update on error
+        setApplications((prev) => prev.filter((app) => app.id !== tempId));
+        throw err;
       }
     }
   };

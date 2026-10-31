@@ -66,7 +66,7 @@ export const ApplicationFormModal: React.FC<ApplicationFormModalProps> = ({
     setError("");
   }, [applicationToEdit, isOpen, createModalDefaultStatus]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!company.trim()) {
       setError("Company name is required.");
@@ -93,13 +93,16 @@ export const ApplicationFormModal: React.FC<ApplicationFormModalProps> = ({
       interviews: applicationToEdit?.interviews || [],
     };
 
-    if (applicationToEdit) {
-      updateApplication(applicationToEdit.id, appData);
-    } else {
-      addApplication(appData);
+    try {
+      if (applicationToEdit) {
+        await updateApplication(applicationToEdit.id, appData);
+      } else {
+        await addApplication(appData);
+      }
+      onClose();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save application. Please try again.");
     }
-
-    onClose();
   };
 
   return (
