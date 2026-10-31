@@ -208,8 +208,8 @@ export const AppTopBar: React.FC<AppTopBarProps> = ({ onOpenMobileMenu }) => {
                     app.interviews && 
                     app.interviews.some((intv) => !intv.completed)
                   )
-                  .map((app) => 
-                    app.interviews
+                  .map((app) =>
+                    (app.interviews || [])
                       .filter((intv) => !intv.completed)
                       .map((intv) => (
                         <div

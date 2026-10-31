@@ -42,7 +42,7 @@ export async function PUT(
       return NextResponse.json({ error: "Interview not found" }, { status: 404 });
     }
 
-    const body = await req.json();
+    const body = await req.json() as Record<string, any>;
     const updateData: Record<string, any> = {};
 
     if (typeof body.completed === "boolean") {

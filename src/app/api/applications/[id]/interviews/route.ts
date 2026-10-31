@@ -31,7 +31,7 @@ export async function POST(
       );
     }
 
-    const body = await req.json();
+    const body = await req.json() as Record<string, any>;
     const { stage, date, time, interviewer, meetingLink, notes } = body;
 
     if (!stage || typeof stage !== "string" || !stage.trim()) {

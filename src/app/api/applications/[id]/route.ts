@@ -67,7 +67,7 @@ export async function PUT(
       );
     }
 
-    const body = await req.json();
+    const body = await req.json() as Record<string, any>;
 
     const validStatuses = [
       "Wishlist",
