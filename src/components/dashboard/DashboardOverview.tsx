@@ -144,10 +144,9 @@ export const DashboardOverview: React.FC = () => {
             <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
               {stats.total}
             </span>
-            <span className="text-xs text-slate-500">records</span>
           </div>
-          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
-            <span className="font-medium text-slate-700 dark:text-slate-300">{stats.wishlist}</span> in wishlist
+          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+            {stats.wishlist} in wishlist
           </p>
         </div>
 
@@ -161,7 +160,6 @@ export const DashboardOverview: React.FC = () => {
             <span className="text-3xl font-bold tracking-tight text-blue-900 dark:text-blue-100">
               {inProgress.length}
             </span>
-            <span className="text-xs text-blue-600 dark:text-blue-400">in process</span>
           </div>
           <p className="mt-2 text-xs text-blue-700/80 dark:text-blue-300/80">
             {stats.applied} applied · {stats.assessment} assessment
@@ -178,10 +176,9 @@ export const DashboardOverview: React.FC = () => {
             <span className="text-3xl font-bold tracking-tight text-purple-900 dark:text-purple-100">
               {stats.interview}
             </span>
-            <span className="text-xs text-purple-600 dark:text-purple-400">stages</span>
           </div>
           <p className="mt-2 text-xs text-purple-700/80 dark:text-purple-300/80">
-            {stats.upcomingInterviewsCount} upcoming sessions scheduled
+            {stats.upcomingInterviewsCount} upcoming
           </p>
         </div>
 
@@ -195,7 +192,6 @@ export const DashboardOverview: React.FC = () => {
             <span className="text-3xl font-bold tracking-tight text-emerald-900 dark:text-emerald-100">
               {stats.offer}
             </span>
-            <span className="text-xs text-emerald-600 dark:text-emerald-400">offers</span>
           </div>
           <p className="mt-2 text-xs text-emerald-700/80 dark:text-emerald-300/80">
             {stats.rejected} rejected · {stats.withdrawn} withdrawn
