@@ -76,6 +76,9 @@ export async function PUT(req: NextRequest) {
     if (typeof body.dailyGoalTarget === "number" && body.dailyGoalTarget > 0) {
       updateData.dailyGoalTarget = body.dailyGoalTarget;
     }
+    if (typeof body.hasInitialized === "boolean") {
+      updateData.hasInitialized = body.hasInitialized;
+    }
 
     const user = await prisma.user.update({
       where: { id: session.user.id },
@@ -84,6 +87,7 @@ export async function PUT(req: NextRequest) {
         workspaceTitle: true,
         dailyGoalCurrent: true,
         dailyGoalTarget: true,
+        hasInitialized: true,
       },
     });
 
