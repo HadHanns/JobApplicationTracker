@@ -48,3 +48,4 @@ next-env.d.ts
 # root files (keep in public folder)
 *.xlsx
 *.png
+.env*
