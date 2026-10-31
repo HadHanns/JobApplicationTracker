@@ -34,6 +34,7 @@ export const ApplicationFormModal: React.FC<ApplicationFormModalProps> = ({
   const [followUpDate, setFollowUpDate] = useState("");
 
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (applicationToEdit) {
@@ -68,6 +69,8 @@ export const ApplicationFormModal: React.FC<ApplicationFormModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    
     if (!company.trim()) {
       setError("Company name is required.");
       return;
@@ -93,6 +96,7 @@ export const ApplicationFormModal: React.FC<ApplicationFormModalProps> = ({
       interviews: applicationToEdit?.interviews || [],
     };
 
+    setIsSubmitting(true);
     try {
       if (applicationToEdit) {
         await updateApplication(applicationToEdit.id, appData);
@@ -102,6 +106,8 @@ export const ApplicationFormModal: React.FC<ApplicationFormModalProps> = ({
       onClose();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save application. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -247,11 +253,21 @@ export const ApplicationFormModal: React.FC<ApplicationFormModalProps> = ({
         />
 
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-          <Button type="button" variant="ghost" onClick={onClose}>
+          <Button type="button" variant="ghost" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </Button>
-          <Button type="submit" variant="primary">
-            {applicationToEdit ? "Save Changes" : "Create Application"}
+          <Button type="submit" variant="primary" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <span className="flex items-center gap-2">
+                <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                {applicationToEdit ? "Saving..." : "Creating..."}
+              </span>
+            ) : (
+              applicationToEdit ? "Save Changes" : "Create Application"
+            )}
           </Button>
         </div>
       </form>
