@@ -24,7 +24,11 @@ import {
 } from "lucide-react";
 import { useApplications, NavTab } from "@/lib/application-context";
 
-export const AppSidebar: React.FC = () => {
+interface AppSidebarProps {
+  fixed?: boolean;
+}
+
+export const AppSidebar: React.FC<AppSidebarProps> = ({ fixed = true }) => {
   const { data: session } = useSession();
   const {
     activeTab,
@@ -71,7 +75,9 @@ export const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed top-0 left-0 bottom-0 z-40 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between transition-all duration-300 ease-in-out ${
+      className={`${
+        fixed ? "fixed top-0 left-0 bottom-0 z-40" : "w-full h-full"
+      } bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between transition-all duration-300 ease-in-out ${
         sidebarCollapsed ? "w-16" : "w-60"
       }`}
     >

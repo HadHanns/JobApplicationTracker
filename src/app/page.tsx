@@ -75,7 +75,7 @@ export default function HomePage() {
               </button>
             </div>
             <div className="flex-1 overflow-y-auto">
-              <AppSidebar />
+              <AppSidebar fixed={false} />
             </div>
           </div>
         </div>
