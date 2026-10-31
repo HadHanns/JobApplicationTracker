@@ -131,19 +131,19 @@ export const SettingsView: React.FC = () => {
                 <User className="w-6 h-6" />
               </div>
             )}
-            <div>
-              <div className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                <span>{session?.user?.name || "Offerly User"}</span>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-bold text-slate-900 dark:text-slate-100 flex flex-wrap items-center gap-2">
+                <span className="truncate">{session?.user?.name || "Offerly User"}</span>
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 shrink-0">
                   Google Verified
                 </span>
               </div>
-              <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
                 {session?.user?.email || "Signed in with Google"}
               </div>
               <div className="text-[11px] text-purple-600 dark:text-purple-400 mt-1 flex items-center gap-1 font-medium">
-                <Database className="w-3 h-3" />
-                <span>Data tersimpan privat & terisolasi di database SQLite server</span>
+                <Database className="w-3 h-3 shrink-0" />
+                <span className="truncate">Data tersimpan privat & terisolasi di database server</span>
               </div>
             </div>
           </div>
