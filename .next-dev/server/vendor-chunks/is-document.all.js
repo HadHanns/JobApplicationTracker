@@ -1,0 +1,25 @@
+"use strict";
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+exports.id = "vendor-chunks/is-document.all";
+exports.ids = ["vendor-chunks/is-document.all"];
+exports.modules = {
+
+/***/ "(ssr)/./node_modules/is-document.all/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/is-document.all/index.js ***!
+  \***********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("\n\nvar callBound = __webpack_require__(/*! call-bound */ \"(ssr)/./node_modules/call-bound/index.js\");\n\nvar toStr = callBound('Object.prototype.toString');\n\nvar isIE68 = !(0 in [,]); // eslint-disable-line no-sparse-arrays, no-magic-numbers\n\nvar objectClass = '[object Object]';\nvar ddaClass = '[object HTMLAllCollection]';\n\n/** @type {(() => false) | ((value: unknown) => value is HTMLAllCollection)} */\nvar isDDA = function isDocumentDotAll() {\n\treturn /** @type {const} */ (false);\n};\nif (typeof document === 'object') {\n\t// Firefox 3 canonicalizes DDA to undefined when it's not accessed directly\n\tvar all = document.all;\n\tif (toStr(all) === toStr(document.all)) {\n\t\tisDDA = /** @type {import('.')} */ (function isDocumentDotAll(value) {\n\t\t\t/* globals document: false */\n\t\t\t// in IE 6-8, typeof document.all is \"object\" and it's truthy\n\t\t\tif ((isIE68 || !value) && (typeof value === 'undefined' || typeof value === 'object')) {\n\t\t\t\ttry {\n\t\t\t\t\t// @ts-expect-error nullish will throw\n\t\t\t\t\tvar str = toStr(value);\n\t\t\t\t\t// IE 6-8 uses `objectClass`\n\t\t\t\t\treturn (str === ddaClass || str === objectClass)\n\t\t\t\t\t\t&& /** @type {Function} */ (value)('') == null; // eslint-disable-line eqeqeq\n\t\t\t\t} catch (e) { /**/ }\n\t\t\t}\n\t\t\treturn false;\n\t\t});\n\t}\n}\n\nmodule.exports = isDDA;\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHNzcikvLi9ub2RlX21vZHVsZXMvaXMtZG9jdW1lbnQuYWxsL2luZGV4LmpzIiwibWFwcGluZ3MiOiJBQUFhOztBQUViLGdCQUFnQixtQkFBTyxDQUFDLDREQUFZOztBQUVwQzs7QUFFQSwwQkFBMEI7O0FBRTFCO0FBQ0E7O0FBRUEsV0FBVyxrRUFBa0U7QUFDN0U7QUFDQSxtQkFBbUIsT0FBTztBQUMxQjtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EscUJBQXFCLGFBQWE7QUFDbEM7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBLG9CQUFvQixVQUFVLHdCQUF3QjtBQUN0RCxNQUFNLFlBQVk7QUFDbEI7QUFDQTtBQUNBLEdBQUc7QUFDSDtBQUNBOztBQUVBIiwic291cmNlcyI6WyIvVXNlcnMvaGFkZGFkaGFubmFuc3JnL0RvY3VtZW50cy9Kb2JBcHBsaWNhdGlvblRyYWNrZXIvbm9kZV9tb2R1bGVzL2lzLWRvY3VtZW50LmFsbC9pbmRleC5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyIndXNlIHN0cmljdCc7XG5cbnZhciBjYWxsQm91bmQgPSByZXF1aXJlKCdjYWxsLWJvdW5kJyk7XG5cbnZhciB0b1N0ciA9IGNhbGxCb3VuZCgnT2JqZWN0LnByb3RvdHlwZS50b1N0cmluZycpO1xuXG52YXIgaXNJRTY4ID0gISgwIGluIFssXSk7IC8vIGVzbGludC1kaXNhYmxlLWxpbmUgbm8tc3BhcnNlLWFycmF5cywgbm8tbWFnaWMtbnVtYmVyc1xuXG52YXIgb2JqZWN0Q2xhc3MgPSAnW29iamVjdCBPYmplY3RdJztcbnZhciBkZGFDbGFzcyA9ICdbb2JqZWN0IEhUTUxBbGxDb2xsZWN0aW9uXSc7XG5cbi8qKiBAdHlwZSB7KCgpID0+IGZhbHNlKSB8ICgodmFsdWU6IHVua25vd24pID0+IHZhbHVlIGlzIEhUTUxBbGxDb2xsZWN0aW9uKX0gKi9cbnZhciBpc0REQSA9IGZ1bmN0aW9uIGlzRG9jdW1lbnREb3RBbGwoKSB7XG5cdHJldHVybiAvKiogQHR5cGUge2NvbnN0fSAqLyAoZmFsc2UpO1xufTtcbmlmICh0eXBlb2YgZG9jdW1lbnQgPT09ICdvYmplY3QnKSB7XG5cdC8vIEZpcmVmb3ggMyBjYW5vbmljYWxpemVzIEREQSB0byB1bmRlZmluZWQgd2hlbiBpdCdzIG5vdCBhY2Nlc3NlZCBkaXJlY3RseVxuXHR2YXIgYWxsID0gZG9jdW1lbnQuYWxsO1xuXHRpZiAodG9TdHIoYWxsKSA9PT0gdG9TdHIoZG9jdW1lbnQuYWxsKSkge1xuXHRcdGlzRERBID0gLyoqIEB0eXBlIHtpbXBvcnQoJy4nKX0gKi8gKGZ1bmN0aW9uIGlzRG9jdW1lbnREb3RBbGwodmFsdWUpIHtcblx0XHRcdC8qIGdsb2JhbHMgZG9jdW1lbnQ6IGZhbHNlICovXG5cdFx0XHQvLyBpbiBJRSA2LTgsIHR5cGVvZiBkb2N1bWVudC5hbGwgaXMgXCJvYmplY3RcIiBhbmQgaXQncyB0cnV0aHlcblx0XHRcdGlmICgoaXNJRTY4IHx8ICF2YWx1ZSkgJiYgKHR5cGVvZiB2YWx1ZSA9PT0gJ3VuZGVmaW5lZCcgfHwgdHlwZW9mIHZhbHVlID09PSAnb2JqZWN0JykpIHtcblx0XHRcdFx0dHJ5IHtcblx0XHRcdFx0XHQvLyBAdHMtZXhwZWN0LWVycm9yIG51bGxpc2ggd2lsbCB0aHJvd1xuXHRcdFx0XHRcdHZhciBzdHIgPSB0b1N0cih2YWx1ZSk7XG5cdFx0XHRcdFx0Ly8gSUUgNi04IHVzZXMgYG9iamVjdENsYXNzYFxuXHRcdFx0XHRcdHJldHVybiAoc3RyID09PSBkZGFDbGFzcyB8fCBzdHIgPT09IG9iamVjdENsYXNzKVxuXHRcdFx0XHRcdFx0JiYgLyoqIEB0eXBlIHtGdW5jdGlvbn0gKi8gKHZhbHVlKSgnJykgPT0gbnVsbDsgLy8gZXNsaW50LWRpc2FibGUtbGluZSBlcWVxZXFcblx0XHRcdFx0fSBjYXRjaCAoZSkgeyAvKiovIH1cblx0XHRcdH1cblx0XHRcdHJldHVybiBmYWxzZTtcblx0XHR9KTtcblx0fVxufVxuXG5tb2R1bGUuZXhwb3J0cyA9IGlzRERBO1xuIl0sIm5hbWVzIjpbXSwiaWdub3JlTGlzdCI6WzBdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///(ssr)/./node_modules/is-document.all/index.js\n");
+
+/***/ })
+
+};
+;
