@@ -253,13 +253,6 @@ export const KanbanBoard: React.FC = () => {
 
                   <div className="flex items-center gap-1 opacity-80 hover:opacity-100">
                     <button
-                      onClick={() => handleQuickAdd(col.status)}
-                      className="p-1 rounded-md hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
-                      title={`Add job to ${col.title}`}
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                    </button>
-                    <button
                       className="p-1 rounded-md hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
                       title="Column options"
                     >
