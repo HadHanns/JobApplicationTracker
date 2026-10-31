@@ -46,6 +46,7 @@ model User {
   workspaceTitle String   @default("Job Hunt 2026")
   dailyGoalCurrent Int    @default(12)
   dailyGoalTarget  Int    @default(24)
+  hasInitialized  Boolean @default(false)
   
   applications  JobApplication[]
   createdAt     DateTime  @default(now())

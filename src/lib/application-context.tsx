@@ -132,22 +132,31 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
         if (Array.isArray(json.data)) {
           if (json.data.length > 0) {
             setApplications(json.data);
-            localStorage.setItem(initKey, "true");
           } else {
-            // Database has 0 applications
-            const isInitialized = localStorage.getItem(initKey) === "true";
-            if (isInitialized) {
-              // User has intentionally cleared their pipeline, keep clean
-              setApplications([]);
-            } else {
-              // Brand new user on very first visit: populate initial sample data
-              localStorage.setItem(initKey, "true");
-              await fetch("/api/applications/batch", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ applications: INITIAL_APPLICATIONS, mode: "replace" }),
-              });
-              setApplications(INITIAL_APPLICATIONS);
+            // Database has 0 applications - check if user has been initialized before
+            const settingsRes = await fetch("/api/user/settings");
+            if (settingsRes.ok) {
+              const settingsJson = (await settingsRes.json()) as any;
+              const hasInitialized = settingsJson.data?.hasInitialized === true;
+
+              if (hasInitialized) {
+                // User has intentionally cleared their pipeline before, keep clean
+                setApplications([]);
+              } else {
+                // Brand new user on very first visit: populate initial sample data
+                await fetch("/api/applications/batch", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ applications: INITIAL_APPLICATIONS, mode: "replace" }),
+                });
+                // Mark user as initialized in database
+                await fetch("/api/user/settings", {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ hasInitialized: true }),
+                });
+                setApplications(INITIAL_APPLICATIONS);
+              }
             }
           }
         }

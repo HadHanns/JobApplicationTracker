@@ -38,6 +38,7 @@ export async function GET() {
         workspaceTitle: true,
         dailyGoalCurrent: true,
         dailyGoalTarget: true,
+        hasInitialized: true,
         name: true,
         email: true,
         image: true,
